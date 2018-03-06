@@ -1,4 +1,5 @@
 require 'date'
+require_relative 'room'
 require_relative 'invalid_duration_error'
 
 module BookingSystem
@@ -12,9 +13,8 @@ module BookingSystem
       @room = input[:room]
       raise InvalidDurationError.new("Check out time can not be before check in time") if  booking_duration < 0
     end
-# @check_out != nil &&
+    
     def booking_duration
-      # return nil if @check_out == nil
       return (@check_out - @check_in).to_i
     end
 
