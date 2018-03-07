@@ -57,5 +57,3 @@ module BookingSystem
 
   end
 end
-a = BookingSystem::Administrator.new
-puts a.list_available_rooms(Date.parse('2018-03-27'),Date.parse('2018-03-30'))
