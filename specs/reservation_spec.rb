@@ -29,19 +29,24 @@ describe "Reservation class" do
     end
   end
 
-    describe "#booking_duration" do
-      it "returns the duration of the booking in days" do
+  describe "#booking_duration" do
+    it "returns the duration of the booking in days" do
       reservation.booking_duration.must_equal 7
       reservation.booking_duration.must_be_instance_of Integer
     end
-    end
+  end
 
-    describe "#total_cost" do
-      it "returns total cost for a given reservation" do
+  describe "#total_cost" do
+    it "returns total cost for a given reservation" do
       reservation.total_cost.must_equal 1400
       reservation.total_cost.must_be_instance_of Integer
     end
+    it "does not charge for the checkout day" do
+      reservation_for_2_days = BookingSystem::Reservation.new({
+        id: 1, check_in: Date.parse("2018-03-01"), check_out: Date.parse("2018-03-02"), room: BookingSystem::Room.new(1, 200)})
+      reservation_for_2_days.total_cost.must_equal 200
     end
+  end
 
 
 end
