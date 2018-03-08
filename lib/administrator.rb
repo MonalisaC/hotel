@@ -1,3 +1,4 @@
+require 'csv'
 require 'date'
 require_relative 'room'
 require_relative 'reservation'
@@ -8,15 +9,24 @@ module BookingSystem
     attr_reader :rooms, :reservations, :range
 
     def initialize
-      @rooms = {}
-      (1..20).each{ |num| @rooms[num] = BookingSystem::Room.new(num, 200.00) }
+      @rooms = load_rooms
+      #{}
+      # (1..20).each{ |num| @rooms[num] = BookingSystem::Room.new(num, 200.00) }
       @reservations = {}
       @range = (1..500).to_a
     end
 
-    # def load_rooms
-    #   rooms = {}
-    # end
+    def load_rooms
+      number = nil
+      cost = nil
+      rooms = {}
+      CSV.read("support/rooms.csv", :headers => true, :header_converters => :symbol, :converters => :all).each { |line|
+        number = line[0].to_i
+        cost = line[1].to_f
+        rooms[number] = BookingSystem::Room.new(number, cost)
+      }
+      return rooms
+    end
 
 
     def list_rooms
@@ -47,8 +57,8 @@ module BookingSystem
     def list_reserved_rooms(start_date, end_date)
       reserved_rooms = []
       (start_date..end_date).each{ |date|
-         reserved_rooms += find_reservation(date).map{ |reservation| reservation.room }}
-         return reserved_rooms.uniq
+      reserved_rooms += find_reservation(date).map{ |reservation| reservation.room }}
+      return reserved_rooms.uniq
     end
 
     def list_available_rooms(start_date, end_date)
