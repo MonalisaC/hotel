@@ -16,5 +16,5 @@ describe "Room class" do
       room.cost.must_be_kind_of Integer
     end
 
-end
+  end
 end

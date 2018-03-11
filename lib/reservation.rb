@@ -1,25 +1,20 @@
 require 'date'
+require_relative 'booking'
 require_relative 'room'
 require_relative 'invalid_duration_error'
 
 module BookingSystem
-  class Reservation
-    attr_reader :id, :check_in, :check_out, :room
+  class Reservation < Booking
+    attr_reader :room, :cost
 
     def initialize(input)
-      @id = input[:id]
-      @check_in = input[:check_in]
-      @check_out = input[:check_out]
+      super(input)
       @room = input[:room]
-      raise InvalidDurationError.new("Check out time can not be before check in time") if  booking_duration < 0
-    end
-
-    def booking_duration
-      return (@check_out - @check_in).to_i
+      @cost = input.has_key?(:rate) ? input[:rate] : @room.cost
     end
 
     def total_cost
-      return booking_duration * @room.cost
+      return booking_duration * @cost
     end
 
   end
