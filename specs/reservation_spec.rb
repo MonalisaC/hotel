@@ -41,10 +41,16 @@ describe "Reservation class" do
       reservation.total_cost.must_equal 1400
       reservation.total_cost.must_be_instance_of Integer
     end
+
     it "does not charge for the checkout day" do
       reservation_for_2_days = BookingSystem::Reservation.new({
         id: 1, check_in: Date.parse("2018-03-01"), check_out: Date.parse("2018-03-02"), room: BookingSystem::Room.new(1, 200)})
       reservation_for_2_days.total_cost.must_equal 200
+    end
+
+    it "uses the rate if provided" do
+      discounted_reservation = BookingSystem::Reservation.new({id: 1, check_in: Date.parse("2018-03-20"), check_out: Date.parse("2018-03-27"), room: BookingSystem::Room.new(1, 200), rate: 100.00})
+      discounted_reservation.total_cost.must_equal 700.00
     end
   end
 
